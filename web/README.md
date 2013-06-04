@@ -60,7 +60,7 @@ First, do
 
     cd demo
     cp local_settings.py.template local_settings.py
-    
+
 At a minimum, you need to set up a database for Django to store data
 in.  The easiest option is an SQLite database, which doesn't require a
 separate server or extra configuration.  In the new
@@ -79,7 +79,7 @@ automatically (provided the containing directory exists).
 To set up the database, from the `demo` directory run the following:
 
     ./manage.py syncdb
-    
+    ./manage.py createcachetable django_cache_table    
 This step will also prompt you to create a "superuser" name and
 password, which you will need once the server is running to be able to
 log in.
