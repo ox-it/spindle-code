@@ -14,8 +14,8 @@ from django.db.models import Q
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic.edit import UpdateView
-from django.views.generic.list_detail import object_detail
-from django.views.generic.create_update import update_object
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import UpdateView
 
 import celery.task.base
 
@@ -59,7 +59,7 @@ def do_itemlist(request, limit=15, offset=0, search=None,
     count = base_query().count()
     query = base_query().order_by(sort_by if (sort_dir > 0) else ("-" + sort_by))
     items = query[offset:offset+limit]
-    
+
     # Construct readable descriptions of search and range
     if len(items) < limit:
         range_description = "all"
@@ -202,7 +202,7 @@ class RequestTranscriptForm(forms.Form):
 # List item transcripts
 @login_required
 def item_tracks(request, item_id):
-    return object_detail(
+    return DetailView.as_view(
         request,
         queryset = Item.objects,
         object_id = item_id,
@@ -211,14 +211,14 @@ def item_tracks(request, item_id):
 
 @login_required
 def item_revisions(request, item_id):
-    return object_detail(
+    return DetailView.as_view(
         request, queryset = Item.objects, object_id = item_id,
         template_name = "spindle/item_revisions.html",
         template_object_name = "item")
 
 @login_required
 def item_metadata(request, item_id):
-    return update_object(request,
+    return UpdateView.as_view(request,
         form_class = ItemMetadataForm,
         object_id = item_id,
         template_name = "spindle/item_metadata.html",
@@ -364,7 +364,7 @@ class TrackMetaView(UpdateView):
             logger.info("Publishing item %s", item)
             spindle.publish.publish_item(item)
         return response
-            
+
 
 
 # Display keywords
@@ -415,7 +415,7 @@ def queue(request):
             for task in TranscriptionTask.queue.all():
                 if task.status() in ('SUCCESS', 'FAILURE'):
                     task.delete()
-                   
+
         if 'delete_task' in request.POST:
             task_id = request.POST['delete_task_id']
             TranscriptionTask.queue.filter(task_id=task_id).delete()
@@ -495,8 +495,8 @@ def run_tasks(request, task_classes):
         if key in request.POST and \
            (not data['task'] or data['task'].status == 'SUCCESS'):
             data['task'] = task_class.delay()
-        
-    
+
+
     # Make progress bars for any running tasks
     for key, data in tasks.iteritems():
         task = data['task']
@@ -511,7 +511,7 @@ def run_tasks(request, task_classes):
                 data['progress'] = 100
             else:
                 data['progress'] = 0
-                
+
     return tasks
 
 
