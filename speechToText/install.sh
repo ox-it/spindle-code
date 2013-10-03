@@ -3,7 +3,7 @@
 SPHINX_URL=http://sourceforge.net/projects/cmusphinx/files/sphinx4/1.0%20beta6/sphinx4-1.0beta6-src.zip/download
 HUB4_ACOUSTIC_URL=http://sourceforge.net/projects/cmusphinx/files/Acoustic%20and%20Language%20Models/US%20English%20HUB4%20Acoustic%20Model/hub4opensrc.cd_continuous_8gau.zip/download
 HUB4_TRIGRAM_URL=http://sourceforge.net/projects/cmusphinx/files/Acoustic%20and%20Language%20Models/US%20English%20HUB4%20Language%20Model/HUB4_trigram_lm.zip/download 
-DICTIONARY_URL=https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/cmudict/sphinxdict/cmudict.0.7a_SPHINX_40
+DICTIONARY_URL=https://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/sphinxdict/cmudict.0.7a_SPHINX_40
 
 echo '* Downloading Sphinx 4'
 curl -L $SPHINX_URL > sphinx.zip \
